@@ -36,9 +36,7 @@ export function incrementIfOdd() {
 
 export function incrementAsync() {
 	return async (dispatch, getState) => {
-		await new Promise(function (resolve, reject){
-			setTimeout(resolve, 5000);
-		});
+		await setTimeout(() => { }, 5000);
 		increment()(dispatch, getState);
 	}
 }

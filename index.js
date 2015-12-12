@@ -1,3 +1,4 @@
+
 import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
@@ -5,6 +6,7 @@ import { Provider } from 'react-redux'
 import App from './components/Counter'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
+
 import {redux2,redux2Middleware} from './redux2'
 import {reducers,actions} from './reducer2'
   
@@ -22,11 +24,12 @@ function configureStore(initialState) {
       store.replaceReducer(nextReducer)
     })
   }
- 
+
   return store
 }
 
 const store = configureStore()
+
 
 redux2(store);
 
