@@ -1,21 +1,9 @@
-
+ 
+ 
+export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
+export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
 
 export function increment() {
-	
-	 
-	return {
-		type : 'increment',
-		state : {
-			n : state.n++
-		}
-	}
-}
-
-
-export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
-	export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
-
-	export function increment() {
 	return {
 		type : INCREMENT_COUNTER
 	}
@@ -28,11 +16,8 @@ export function decrement() {
 }
 
 export function incrementIfOdd() {
-	return (dispatch, getState) =  > {
-		const {
-			counter
-		}
-			 = getState()
+	return (dispatch, getState) => {
+		const { counter } = getState()
 
 			if (counter.n % 2 === 0) {
 				return
@@ -43,8 +28,8 @@ export function incrementIfOdd() {
 }
 
 export function incrementAsync(delay = 1000) {
-	return dispatch =  > {
-		setTimeout(() =  > {
+	return dispatch => {
+		setTimeout(() => {
 				dispatch(increment())
 			}, delay)
 	}
