@@ -1,0 +1,13 @@
+{
+  "name": "redux2",
+  "version": "0.1.0",
+  "description": "Redux2.",
+  "main": "index.js",
+  
+  "author": {
+    "name": "steven chen",
+    "email": "522702986@qq.com"
+  },
+  "license": "MIT"
+  
+}

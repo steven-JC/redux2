@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import App from './components/Counter'
 import { createStore, applyMiddleware ,combineReducers } from 'redux'
 
-import {redux2,reducerMaker,redux2Middleware} from './redux2'
+import {redux2,reducerMaker,redux2Middleware} from 'redux2'
 
 var reduc=reducerMaker(require.context('./actions', false, /\.js$/));
 
