@@ -1,6 +1,6 @@
 'use strict';
 
-import {process} from './process'
+var process=require('./process').process;
 
 var info=null;
 

@@ -7,7 +7,7 @@ function process(conf){
 	
 	console.log(req.keys());
 	
-	req.keys().forEach(function(name) {
+	req.keys().forEach(function(name){
 		
 		let key=name.replace(/.*?\/([a-zA-Z0-9_\$]+?)\.js/,function(item,$1){
 			return $1;

@@ -18,13 +18,18 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
+  resolve: {
+    extensions: ['', '.jsx', '.js']
+  },
   module: {
     loaders: [
       {
 			test: /\.(js|jsx)$/,
 			exclude: /(node_modules)/,
 			loader: 'babel',
-
+		},{
+			test: /\node_modules\/redux2\/.*?.js$/,
+			loader: 'babel',
 		}
     ]
   }
