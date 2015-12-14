@@ -35,22 +35,18 @@ export function incrementIfOdd() {
 		if (counter.n % 2 === 0) {
 			return
 		}
-		increment()(dispatch, getState);
+		dispatch('increment');
 	}
 }
 
 export function incrementAsync() {
-	return (dispatch, getState) => {
-		setTimeout(() => { increment()(dispatch, getState); }, 2000);
-		
+	return async (dispatch, getState) => {
+		await new Promise(function (resolve, reject) {
+			setTimeout(() => { resolve(); }, 2000);
+		});
+		return dispatch('increment');
 	}
 }
 
 
-/*async function(){
-	await new Promise(function (resolve, reject) {
-		setTimeout(() => { increment()(dispatch, getState);resolve() }, 2000);
-	});
-}
-*/
 

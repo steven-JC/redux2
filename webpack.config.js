@@ -27,9 +27,10 @@ module.exports = {
 			test: /\.(js|jsx)$/,
 			exclude: /(node_modules)/,
 			loader: 'babel',
-		},{
-			test: /\node_modules\/redux2\/.*?.js$/,
-			loader: 'babel',
+			query: {
+				stage: 0,
+				optional: ['runtime'],
+			},
 		}
     ]
   }

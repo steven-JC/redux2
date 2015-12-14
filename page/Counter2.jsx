@@ -3,32 +3,10 @@ import { connect } from 'react-redux'
 import ReactDOM from 'react-dom';
 
 
-@connect(state=>({text:state.text}))
-class Btn extends Component {
-	static propTypes = {
-	  text:PropTypes.string.isRequired
-	}
-	
-	componentWillReceiveProps(props) {
-		//console.log('11',props);
-	}
-	
-	handleClick(){
-		this.props.dispatch('incrementIfOdd');
-	}
-	
-  render() {
-    const {text} = this.props
-    return (
-      <button onClick={this.handleClick.bind(this)}>{text}</button>
-    )
-  }
-}
 
-console.log({f:Btn});
 
 @connect(state=>({counter: {n:state.counter.n}}))
-export default class Counter extends Component {
+export default class Counter2 extends Component {
 	static propTypes = {
 	  counter: PropTypes.object.isRequired
 	}
@@ -44,13 +22,6 @@ export default class Counter extends Component {
 		this.props.dispatch('increment');
 	}
 	
-	incrementIfOdd(){
-		this.props.dispatch('incrementIfOdd');
-	}
-	incrementAsync(){
-		this.props.dispatch('incrementAsync');
-	}
-	
 	decrement(){
 		this.props.dispatch('decrement');
 	}
@@ -64,10 +35,6 @@ export default class Counter extends Component {
         <button ref='btn1' onClick={this.increment.bind(this)}>+</button>
         {' '}
         <button onClick={this.decrement.bind(this)}>-</button>
-        {' '}
-        <Btn incrementIfOdd={this.incrementIfOdd.bind(this)} />
-        {' '}
-        <button onClick={ this.incrementAsync.bind(this) }>Increment async</button>
       </p>
     )
   }
