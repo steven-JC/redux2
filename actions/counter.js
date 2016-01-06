@@ -75,7 +75,7 @@ export function getByAsyncGet() {
 
 export function AsyncGetError() {
 	return async (dispatch, getState) => {
-		//throw "-----AsyncGetError------";
+		throw "-----AsyncGetError------";
 		return {n:-1}
 	}
 }

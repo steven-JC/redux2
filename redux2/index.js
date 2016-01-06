@@ -68,18 +68,20 @@ function redux2Middleware_(actionFuncs, func2MName) {
 								} else
 									result = action;
 
-								if (!result || result.constructor !== Object)
-									throw "the function of model should returns an object or nothing(undefined,null,0,false)";
-
-								next({
-									type: Symbol(),
-									[modelName]: {...result,meta:{
-										action:actionName,
-										state:modelName,
-									}}
-								});
-								return {...result};
-
+								if (result)
+									if( result.constructor !== Object){
+										return result;
+									}else{
+										next({
+											type: Symbol(),
+											[modelName]: {...result,meta:{
+												action:actionName,
+												state:modelName,
+											}}
+										});
+										return {...result};
+									}
+								return result;
 							})(args[0], args[1]);
 						}else{
 							return localDispatch(args[0],args[1]);
@@ -101,6 +103,7 @@ function redux2Middleware_(actionFuncs, func2MName) {
 
 					if(action.then){ // run the root Promise
 						action.then(function(data){
+
 							data=Object.assign({},data,{meta:{
 								action:actionName,
 								state:modelName
@@ -120,7 +123,7 @@ function redux2Middleware_(actionFuncs, func2MName) {
 								type: Symbol(),
 								[modelName]: meta
 							});
-							console.log(meta.meta);
+							console.error(meta.meta);
 						});
 					}else{
 						action=Object.assign({},action,{meta:{
@@ -168,9 +171,7 @@ function redux2(store) {
 			obj = {};
 			obj['_REDUX2_ACTION_NAME_'] = arg1;
 			obj.data = arg2;
-			return new Promise(function(resolve){
-				resolve(dispatch.call(this, obj || arg1));
-			});
+			return dispatch.call(this, obj || arg1);
 		}
 		return dispatch.call(this, obj || arg1);
 	}
