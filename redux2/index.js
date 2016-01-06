@@ -7,7 +7,7 @@ exports['redux2Middleware'] = redux2Middleware;
 
 var info = null, localDispatch;
 
-function redux2Middleware_(actions, binders) {
+function redux2Middleware_(actionFuncs, func2MName) {
 	return function (_ref) {
 		let action;
 		var getState = _ref.getState;
@@ -15,20 +15,21 @@ function redux2Middleware_(actions, binders) {
 			return function (action) {
 				//console.log(arguments);
 				let actionName,
-					stateName,arg=action;
+					modelName,arg=action;
 
 				if (typeof action === 'object') {
 					if (action['_REDUX2_ACTION_NAME_']) {
 
-						if(!actions[action['_REDUX2_ACTION_NAME_']])
-							throw 'please make sure the '+action['_REDUX2_ACTION_NAME_']+' exist.' ;
-
 						actionName = action['_REDUX2_ACTION_NAME_'];
-						stateName = binders[actionName];
-						action = actions[actionName](action.data);
+						modelName = func2MName[actionName];
+
+						if(!actionFuncs[actionName])
+							throw 'please make sure the function '+actionName+' exist.' ;
+
+						action = actionFuncs[actionName](action.data);
 
 					} else {
-						//其他类型的action直接流过
+						//other action pass directly
 						return next(action);
 					}
 				}
@@ -39,108 +40,109 @@ function redux2Middleware_(actions, binders) {
 
 					let dispatch__=function(){
 						var args=arguments;
-						if(typeof args[0]==='string')
-							return (async (args0,args1)=>{
-								var stateName = binders[args0];
-								if(!stateName) {
-									throw "the state binded:"+args0+" is not found";
+						if(typeof args[0]==='string') {
+							return (async (args0, args1)=> {
+								var modelName = func2MName[args0];
+								if (!modelName) {
+									throw "the state with " + args0 + " is not found, please make sure the function "+ args0 +" is exist";
 									return;
 								}
-								var action=actions[args0](args1),result;
-								if(typeof action === 'function'){
-									try {
-										result = await action(dispatch__,getState__(stateName));
-									}catch (e){
-										console.error('error',e.message,e);
-									}
-								}else
-									result=action;
 
-								if(result){
-									if(result.constructor===Object) {
+								var action = actionFuncs[args0](args1), result;
+								if (typeof action === 'function') {
+									try {
+										result = await action(dispatch__, getState__(modelName));
+									} catch (e) {
+										let meta={meta:{
+											action:args0,
+											data:args1,
+											model:modelName,
+											error:e
+										}};
 										next({
-											type : Symbol(),
-											[stateName] : {...result}
+											type: Symbol(),
+											[modelName]: meta
 										});
-										return {...result};
+										console.error(meta.meta);
 									}
-									else if(result.constructor===Array) {
-										next({
-											type : Symbol(),
-											[stateName] : [...result]
-										});
-										return [...result];
-									}else {
-										next({
-											type : Symbol(),
-											[stateName] : result
-										});
-										return result;
-									}
-								}
-							})(args[0],args[1]);
-						else{
+								} else
+									result = action;
+
+								if (!result || result.constructor !== Object)
+									throw "the function of model should returns an object or nothing(undefined,null,0,false)";
+
+								next({
+									type: Symbol(),
+									[modelName]: {...result,meta:{
+										action:actionName,
+										state:modelName,
+									}}
+								});
+								return {...result};
+
+							})(args[0], args[1]);
+						}else{
 							return localDispatch(args[0],args[1]);
 						}
 					};
 
-					let getState__=function(stateName){
-						return function(otherState){
-							var state=getState()[otherState||stateName];
-							if(state){
-								if(state.constructor===Object) {
-									return {...state};
-								}
-								else if(state.constructor===Array) {
-									return [...state];
-								}else {
-									return state;
-								}
-							}
-							return state;
+					let getState__=function(defaultModel){
+						return function(targetModel){
+							var state=getState()[targetModel||defaultModel];
+							if(!state) throw "please check that the model:"+targetModel+' is exist';
+							return {...state};
 						}
 					};
 
-					action = action(dispatch__, getState__(stateName));//必须使用本地方法注入到action中
+					action = action(dispatch__, getState__(modelName));//必须使用本地方法注入到action中
 
 					if(typeof action ==='undefined') return;
 
 
-					if(action.then){ // 执行根 Promise
+					if(action.then){ // run the root Promise
 						action.then(function(data){
 							data=Object.assign({},data,{meta:{
 								action:actionName,
-								state:stateName
+								state:modelName
 							}});
 							next({
 								type : Symbol(),
-								[stateName] : data
+								[modelName] : data
 							});
 						},function (error) {
-							localDispatch({error:error,action:arg});
+							let meta={meta:{
+								action:actionName,
+								data:arg,
+								model:modelName,
+								error:error
+							}};
+							next({
+								type: Symbol(),
+								[modelName]: meta
+							});
+							console.log(meta.meta);
 						});
 					}else{
 						action=Object.assign({},action,{meta:{
 							action:actionName,
-							state:stateName
+							state:modelName
 						}});
 						return next({
 							type : Symbol(),
-							[stateName] : action
+							[modelName] : action
 						});
 					}
 
 				} else {
 					action=Object.assign({},action,{meta:{
 						action:actionName,
-						state:stateName
+						state:modelName
 					}});
 					return next({
 						type : Symbol(),
-						[stateName] : action
+						[modelName] : action
 					});
 				}
-
 			};
 		};
 	}
@@ -155,8 +157,8 @@ function redux2(store) {
 
 	const dispatch = store.dispatch;
 	const {
-		actions,
-		binders
+		actionFuncs,
+		func2MName
 		} = info;
 
 
@@ -175,12 +177,12 @@ function redux2(store) {
 }
 
 function redux2Middleware() {
-	return redux2Middleware_(info.actions, info.binders);
+	return redux2Middleware_(info.actionFuncs, info.func2MName);
 }
 
 function process(conf) {
 
-	let[ reducers, actions, binders] = [{}, {}, {} ];
+	let[ reducers, actionFuncs, func2MName] = [{}, {}, {}];
 
 
 
@@ -189,62 +191,50 @@ function process(conf) {
 
 		req.keys().forEach(function (name) {
 
-			let key = name.replace(/.*?\/([a-zA-Z0-9_\$]+?)\.js/, function (item, $1) {
+			let modelName = name.replace(/.*?\/([a-zA-Z0-9_\$]+?)\.js/, function (item, $1) {
 				return $1;
 			});
 			//get exported default value
-			let obj = req(name);
+			let model = req(name);
 
 			//enforce defaulting, should not be undefined
-			if (typeof obj === 'undefined') {
-				throw  ` the action ${name} should had a default value as "export default {...};" or "export default someValue;"` ;
-				return;
+			if (!model || model.constructor !== Object ||!model['default']||model['default'].constructor !== Object) {
+				throw  `the model file ${name} should had a default data of Object` ;
 			}
-			// reset data
-			if (obj == null)
-				obj = {default:null};
-			else if (obj.constructor !== Object)
-				obj = { default:obj };
 
 			//make the reducer function
-			reducers[key] = (function (name, key, obj) {
-				return function reducer(state, action) {
-					//
+			reducers[modelName] = (function (name, modelName, model) {
+				return function reducer(state, actionResult) {
+					// Init store with default state
 					if (typeof state === 'undefined') {
-						if (obj['default']&&obj['default'].constructor === Object) {
-							return Object.assign({}, obj['default']);
-						} else {
-							return obj['default'] || null;
-						}
+						return Object.assign({}, model['default']);
+					// Update store by actionResult
 					} else {
-						//没更新
-						if (typeof action[key] === 'undefined') {
+						if (typeof actionResult[modelName] === 'undefined') { //when the actionResult returns nothing
 							return state;
 						} else {
-							if (obj['default']&&obj['default'].constructor != Object)
-								return action[key];
-							else
-								return Object.assign({}, state, action[key]);
+							return Object.assign({}, state, actionResult[modelName]);
 						}
 					}
-
 				}
-			})(name, key, obj);
+			})(name, modelName, model);
 
-			obj = {...obj};
-			delete obj.default;
-			Object.keys(obj).forEach((item) => {
-				binders[item] = key;
+			model = {...model};
+			delete model.default;
+			Object.keys(model).forEach((item) => {
+				if(typeof model[item]!=='function') throw item+" should be a function in a model file";
+				if(func2MName[item])  throw "the function "+item+" should be unique in application";
+				func2MName[item] = modelName;
 			});
-			Object.assign(actions, obj);
+			Object.assign(actionFuncs, model);
 
 		});
 
 	}
 
 	return {
-		actions : actions,
+		actionFuncs : actionFuncs,
 		reducers : reducers,
-		binders : binders
+		func2MName : func2MName
 	};
 }

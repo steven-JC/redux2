@@ -7,7 +7,8 @@ import { ReduxRouter, routerStateReducer, reduxReactRouter} from 'redux-router';
 import { Route, IndexRoute, Redirect} from 'react-router';
 import {createHistory} from 'history'
 
-import {redux2,reducerMaker,redux2Middleware} from './redux2'
+import {redux2, reducerMaker, redux2Middleware} from './redux2'
+
 
 var reduc=reducerMaker([require.context('./actions', false, /\.js$/)]);
 
@@ -28,8 +29,8 @@ class Root extends Component {
 		<Provider store={store}> 
 			<ReduxRouter>
 				<Route path="/" component={require('./page/Counter')}/>
-				<Route path="Counter2" component={require('./page/Counter2')} />
-				<Route path="Counter3" component={require('./page/Counter3')} />
+				<Route path="Counter2" component={require('./page/Counter')} />
+				<Route path="Counter3" component={require('./page/Counter')} />
 			</ReduxRouter>
 		</Provider>
 		);
