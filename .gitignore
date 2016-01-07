@@ -3,4 +3,5 @@ node_modules
 .idea
 .project
 npm-debug.log
-redux-counter.iml
+redux2.iml
+example/node_modules
