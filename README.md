@@ -114,10 +114,8 @@ export default class Counter extends Component {
 
 
 With Redux2, you should have this code in your index file of your app, like this:
-bootstrap file
--------------------------------------------------------------------
-
 app.js:
+-------------------------------------------------------------------
 
 ````javascript
 import 'babel-polyfill'
