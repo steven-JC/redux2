@@ -20,9 +20,8 @@ examples
 With Redux2, there is no action and reducer, we use model instead.
 When you realizing one special business requirement , you just need a model('.js' is recommended) and a UI compenent('.jsx' is recommended).
 The model and react compenent are not direct dependency relationship
-model.js
 -------------------------------------------------------------------
-
+model.js
 ````javascript
 
 // when the application init, it would be set to store as the default state of current model, and it should be an plan object
@@ -83,7 +82,6 @@ export function getByAsyncGet() {
 
 The react compenent with redux almost has nothing change, but the props.dispatch.
 You can call a function of model by dispatch a string as the first parameter
-Home.jsx
 -------------------------------------------------------------------
 ````javascript
 import { Component, PropTypes } from 'react'
@@ -114,7 +112,6 @@ export default class Counter extends Component {
 
 
 With Redux2, you should have this code in your index file of your app, like this:
-bootstrap file
 -------------------------------------------------------------------
 
 app.js:
@@ -129,10 +126,10 @@ import { ReduxRouter, routerStateReducer, reduxReactRouter} from 'redux-router';
 import { Route, IndexRoute, Redirect} from 'react-router';
 import {createHistory} from 'history'
 
-// as redux2 is writen with es6 & es7, you need to download redux2.js in any folder of your app.
+#!// as redux2 is writen with es6 & es7, you need to download redux2.js in any folder of your app.
 import {redux2, reducerMaker, redux2Middleware} from './redux2'
 
-// your app should be build with webpack, as you need the function require.context to collect all of models
+#!// your app should be build with webpack, as you need the function require.context to collect all of models
 var reduc=reducerMaker([require.context('./actions', false, /\.js$/)]);
 
 const reducers=combineReducers({...reduc, router: routerStateReducer});

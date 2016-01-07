@@ -5,3 +5,4 @@ node_modules
 npm-debug.log
 redux2.iml
 example/node_modules
+example/cmd.bat
