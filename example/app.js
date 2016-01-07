@@ -28,9 +28,7 @@ class Root extends Component {
 	render(){return (
 		<Provider store={store}> 
 			<ReduxRouter>
-				<Route path="/" component={require('./page/Counter')}/>
-				<Route path="Counter2" component={require('./page/Counter')} />
-				<Route path="Counter3" component={require('./page/Counter')} />
+				<Route path="/" component={require('./page/Home')}/>
 			</ReduxRouter>
 		</Provider>
 		);
