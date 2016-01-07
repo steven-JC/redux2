@@ -1,5 +1,3 @@
-'use strict';
-
 exports.__esModule = true;
 exports['redux2'] = redux2;
 exports['reducerMaker'] = reducerMaker;

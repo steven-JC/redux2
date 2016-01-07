@@ -7,7 +7,7 @@ import { ReduxRouter, routerStateReducer, reduxReactRouter} from 'redux-router';
 import { Route, IndexRoute, Redirect} from 'react-router';
 import {createHistory} from 'history'
 
-import {redux2, reducerMaker, redux2Middleware} from './redux2'
+import {redux2, reducerMaker, redux2Middleware} from './libs/redux2'
 
 
 var reduc=reducerMaker([require.context('./models', false, /\.js$/)]);
@@ -28,7 +28,7 @@ class Root extends Component {
 	render(){return (
 		<Provider store={store}> 
 			<ReduxRouter>
-				<Route path="/" component={require('./page/Home')}/>
+				<Route path="/" component={require('./pages/Home')}/>
 			</ReduxRouter>
 		</Provider>
 		);

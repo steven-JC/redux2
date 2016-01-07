@@ -29,7 +29,7 @@ export function normalGet() {
 	}
 }
 
-export function get() {
+export function get() { 
 	return {n:555}
 }
 
