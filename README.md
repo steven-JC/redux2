@@ -108,7 +108,6 @@ export function sum() {
 }
 
 export function asyncGet(options) {
-    //you can use async function instead of callback
 	return async (dispatch, getState) => {
 		return new Promise(function (resolve, reject) {
 			setTimeout(() => { resolve({n:options.n}); }, 1000);
@@ -117,7 +116,6 @@ export function asyncGet(options) {
 }
 export function normalGet() {
 	return (dispatch, getState) => {
-	    //you can get other model state by passing in a parameter of other model file name.
 	    let {m}=getState('otherModel');
 		return {n:888}
 	}
