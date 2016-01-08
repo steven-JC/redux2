@@ -1,10 +1,6 @@
 Redux2
 ========
-
-Redux2 be a front-end architecture toolkit, is based on redux & react.
-
-With Redux2, you would have a great programming experience! Write less, more specific.
-Your architecture will be more like MV-redux. The redux would more likely to act the mediator and controller, but there is no need to do any coding for this role.
+Write less, more specific, the application architectural toolkit, which is based on redux.
 
 [![Build Status][travis-image]][travis-url]
 [![Dependency Status][gemnasium-image]][gemnasium-url]
@@ -15,11 +11,17 @@ Your architecture will be more like MV-redux. The redux would more likely to act
 > Redux2 is the official successor to optimist. Please feel free to submit issues and pull requests. If you'd like to contribute and don't know where to start, have a look at [the issue list](https://github.com/stevenCJC/redux2/issues) :)
 
 ### Getting started 
+
 ````javascript
 npm install redux2 --save
 ````
 
-### With Redux2, you should have this code in your index file of your app:
+
+examples
+========
+
+
+### your index file of your application should be like this:
 app.js:
 -------------------------------------------------------------------
 
@@ -66,49 +68,41 @@ ReactDOM.render(<Root/>, document.querySelector('#container'));
 
 
 
-examples
-========
+To implement requirement , you need a model and a UI compenent with redux2.
 
-With Redux2, there is no action and reducer, we use model instead.
-When you realizing one special business requirement , you just need a model('.js' is recommended) and a UI compenent('.jsx' is recommended).
-The model and react compenent are not direct dependency relationship
-model.js
+modelName.js 
 -------------------------------------------------------------------
+
+>the extention '.js' of model filename is recommended, as the extention '.jsx' of UI compenent filename is recommended
 
 ````javascript
 
-// when the application init, it would be set to store as the default state of current model,
+// when the application init, it would be set to store as default state of current model,
 // and it should be an plan object
-// all the following function in this file can just update the state of current model
 export default {n:0};
 
+
 // the function name should be unique in your application,
-// as it would be called by other models or compenents
-// if not, it will throw an error tips to you.
 export function sum() {
 	return async (dispatch, getState) => {
 
-	    // "getState" would get state of current model with no parameter
-	    // if you want to get the state of other model,
-	    // you can pass a model file name without extention name as parameter.
-	    // const {m}= getState('otherModelName');
+		// "getState" would get state of current model with no parameter
+		// passing a model file name without extention as parameter will get the state of other model.
+		// const {m}= getState('otherModelName');
 		const {n}= getState();
 
-		// passing a string as the first parameter to dispatch
-		// you can pass the second parameter as the dispatched function argument
-		// it will call another function of model in your application
-		// in async function, you can get the result returned by the awaited dispatch function
-		// and the result would be reflected in UI compenent preferentially ,
-		// if it is used by the UI compenent
+		// passing a string as the first parameter to dispatch, it will call another function of model in your application
+		// the second parameter would be passed to the dispatched function as argument.
+		// in async function, you can get the result returned by the dispatched function with "await",
+		// and the result would be preferentially reflected in UI compenent.
 		var r=await dispatch('asyncGet', {n:33});
 		var rr=await dispatch('normalGet');
 		var rrr=await dispatch('get');
 		var rrrr=await dispatch('getByAsyncGet');
 
-        // the result will update the state of current model and reflected in UI compenent
-        // or get by other function like above
+        	// the returned object will update the state of current model and also reflected in UI compenent
 		return {
-			n: r.n + rr.n + rrr.n + rrrr.n
+			n: n + r.n + rr.n + rrr.n + rrrr.n
 		};
 	}
 }
