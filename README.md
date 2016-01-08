@@ -14,6 +14,58 @@ Your architecture will be more like MV-redux. The redux would more likely to act
 
 > Redux2 is the official successor to optimist. Please feel free to submit issues and pull requests. If you'd like to contribute and don't know where to start, have a look at [the issue list](https://github.com/stevenCJC/redux2/issues) :)
 
+### Getting started 
+````javascript
+npm install redux2 --save
+````
+
+### With Redux2, you should have this code in your index file of your app:
+app.js:
+-------------------------------------------------------------------
+
+````javascript
+import 'babel-polyfill'
+import React,{Component} from 'react'
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
+import { createStore, compose, applyMiddleware ,combineReducers } from 'redux'
+import { ReduxRouter, routerStateReducer, reduxReactRouter} from 'redux-router';
+import { Route, IndexRoute, Redirect} from 'react-router';
+import {createHistory} from 'history'
+
+// as redux2 is writen with es6 & es7,
+// you need to download redux2.js in any folder of your app.
+import {redux2, reducerMaker, redux2Middleware} from './redux2'
+
+// your app should be build with webpack,
+// as you need the function require.context to collect all of models
+var reduc=reducerMaker([require.context('./actions', false, /\.js$/)]);
+
+const reducers=combineReducers({...reduc, router: routerStateReducer});
+
+const store = compose(
+	applyMiddleware( redux2Middleware()),
+	reduxReactRouter({createHistory})
+)(createStore)(reducers);
+
+redux2(store);
+
+class Root extends Component {
+	render(){return (
+		<Provider store={store}>
+			<ReduxRouter>
+				<Route path="/" component={require('./page/Home')}/>
+			</ReduxRouter>
+		</Provider>
+		);
+	}
+}
+
+ReactDOM.render(<Root/>, document.querySelector('#container'));
+````
+
+
+
 examples
 ========
 
@@ -118,51 +170,6 @@ export default class Counter extends Component {
 
 ````
 
-
-With Redux2, you should have this code in your index file of your app, like this:
-app.js:
--------------------------------------------------------------------
-
-````javascript
-import 'babel-polyfill'
-import React,{Component} from 'react'
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { createStore, compose, applyMiddleware ,combineReducers } from 'redux'
-import { ReduxRouter, routerStateReducer, reduxReactRouter} from 'redux-router';
-import { Route, IndexRoute, Redirect} from 'react-router';
-import {createHistory} from 'history'
-
-// as redux2 is writen with es6 & es7,
-// you need to download redux2.js in any folder of your app.
-import {redux2, reducerMaker, redux2Middleware} from './redux2'
-
-// your app should be build with webpack,
-// as you need the function require.context to collect all of models
-var reduc=reducerMaker([require.context('./actions', false, /\.js$/)]);
-
-const reducers=combineReducers({...reduc, router: routerStateReducer});
-
-const store = compose(
-	applyMiddleware( redux2Middleware()),
-	reduxReactRouter({createHistory})
-)(createStore)(reducers);
-
-redux2(store);
-
-class Root extends Component {
-	render(){return (
-		<Provider store={store}>
-			<ReduxRouter>
-				<Route path="/" component={require('./page/Home')}/>
-			</ReduxRouter>
-		</Provider>
-		);
-	}
-}
-
-ReactDOM.render(<Root/>, document.querySelector('#container'));
-````
 
 
 
