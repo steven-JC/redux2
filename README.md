@@ -35,12 +35,9 @@ import { ReduxRouter, routerStateReducer, reduxReactRouter} from 'redux-router';
 import { Route, IndexRoute, Redirect} from 'react-router';
 import {createHistory} from 'history'
 
-// as redux2 is writen with es6 & es7,
-// you need to download redux2.js in any folder of your app.
-import {redux2, reducerMaker, redux2Middleware} from './redux2'
+import {redux2, reducerMaker, redux2Middleware} from 'redux2'
 
-// your app should be build with webpack,
-// as you need the function require.context to collect all of models
+// use the function "require.context" of webpack to collect all of models
 var reduc=reducerMaker([require.context('./actions', false, /\.js$/)]);
 
 const reducers=combineReducers({...reduc, router: routerStateReducer});
@@ -131,8 +128,8 @@ export function getByAsyncGet() {
 
 ````
 
-The react compenent with redux almost has nothing change, but the props.dispatch.
-You can call a function of model by dispatch a string as the first parameter
+You can call a function of model by dispatch a string as the first parameter, without importing a model file.
+
 Home.jsx
 -------------------------------------------------------------------
 ````javascript
@@ -142,7 +139,7 @@ import { connect } from 'react-redux'
 @connect(state=>({counter: {n: state.counter.n}}))
 export default class Counter extends Component {
     sum() {
-        // you can pass the second parameter as options to the function of model if you need
+        // you can pass the second parameter as an argument to the dispatched function of model if you need
         // this.props.dispatch('sum',options);
         this.props.dispatch('sum');
     }
