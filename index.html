@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Redux2 by stevenCJC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Redux2</h1>
+      <h2 class="project-tagline">Write less, more specific, the react application architectural toolkit, which is based on redux.</h2>
+      <a href="https://github.com/stevenCJC/redux2" class="btn">View on GitHub</a>
+      <a href="https://github.com/stevenCJC/redux2/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/stevenCJC/redux2/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="redux2" class="anchor" href="#redux2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Redux2</h1>
+
+<p>Write less, more specific, the react application architectural toolkit, which is based on redux.</p>
+
+<p><a href="https://travis-ci.org/bcoe/yargs"><img src="https://img.shields.io/travis/bcoe/yargs.svg" alt="Build Status"></a>
+<a href="https://gemnasium.com/bcoe/yargs"><img src="https://img.shields.io/gemnasium/bcoe/yargs.svg" alt="Dependency Status"></a>
+<a href="https://coveralls.io/github/bcoe/yargs"><img src="https://img.shields.io/coveralls/bcoe/yargs.svg" alt="Coverage Status"></a>
+<a href="https://www.npmjs.com/package/yargs"><img src="https://img.shields.io/npm/v/yargs.svg" alt="NPM version"></a>
+<a href="https://ci.appveyor.com/project/bcoe/yargs"><img src="https://img.shields.io/appveyor/ci/bcoe/yargs/master.svg?label=Windows%20Tests" alt="Windows Tests"></a></p>
+
+<blockquote>
+<p>Redux2 is the official successor to optimist. Please feel free to submit issues and pull requests. If you'd like to contribute and don't know where to start, have a look at <a href="https://github.com/stevenCJC/redux2/issues">the issue list</a> :)</p>
+</blockquote>
+
+<h3>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h3>
+
+<div class="highlight highlight-source-js"><pre>npm install redux2 <span class="pl-k">--</span>save</pre></div>
+
+<h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>examples</h1>
+
+<h3>
+<a id="your-index-file-of-your-application-should-be-like-this" class="anchor" href="#your-index-file-of-your-application-should-be-like-this" aria-hidden="true"><span class="octicon octicon-link"></span></a>your index file of your application should be like this:</h3>
+
+<h2>
+<a id="appjs" class="anchor" href="#appjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>app.js:</h2>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-s"><span class="pl-pds">'</span>babel-polyfill<span class="pl-pds">'</span></span>
+<span class="pl-k">import</span> <span class="pl-smi">React</span>,{<span class="pl-smi">Component</span>} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react<span class="pl-pds">'</span></span>
+<span class="pl-k">import</span> <span class="pl-smi">ReactDOM</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react-dom<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> { <span class="pl-smi">Provider</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react-redux<span class="pl-pds">'</span></span>
+<span class="pl-k">import</span> { <span class="pl-smi">createStore</span>, <span class="pl-smi">compose</span>, <span class="pl-smi">applyMiddleware</span> ,<span class="pl-smi">combineReducers</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux<span class="pl-pds">'</span></span>
+<span class="pl-k">import</span> { <span class="pl-smi">ReduxRouter</span>, <span class="pl-smi">routerStateReducer</span>, <span class="pl-smi">reduxReactRouter</span>} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-router<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> { <span class="pl-smi">Route</span>, <span class="pl-smi">IndexRoute</span>, <span class="pl-smi">Redirect</span>} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react-router<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> {<span class="pl-smi">createHistory</span>} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>history<span class="pl-pds">'</span></span>
+
+<span class="pl-k">import</span> {<span class="pl-smi">redux2</span>, <span class="pl-smi">reducerMaker</span>, <span class="pl-smi">redux2Middleware</span>} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux2<span class="pl-pds">'</span></span>
+
+<span class="pl-c">// use the function "require.context" of webpack to collect all of models</span>
+<span class="pl-k">var</span> reduc<span class="pl-k">=</span><span class="pl-en">reducerMaker</span>([<span class="pl-smi">require</span>.<span class="pl-en">context</span>(<span class="pl-s"><span class="pl-pds">'</span>./actions<span class="pl-pds">'</span></span>, <span class="pl-c1">false</span>,<span class="pl-sr"> <span class="pl-pds">/</span><span class="pl-cce">\.</span>js<span class="pl-k">$</span><span class="pl-pds">/</span></span>)]);
+
+<span class="pl-k">const</span> <span class="pl-c1">reducers</span><span class="pl-k">=</span><span class="pl-en">combineReducers</span>({...<span class="pl-smi">reduc</span>, router<span class="pl-k">:</span> routerStateReducer});
+
+<span class="pl-k">const</span> <span class="pl-c1">store</span> <span class="pl-k">=</span> <span class="pl-en">compose</span>(
+    <span class="pl-en">applyMiddleware</span>( <span class="pl-en">redux2Middleware</span>()),
+    <span class="pl-en">reduxReactRouter</span>({createHistory})
+)(createStore)(reducers);
+
+<span class="pl-en">redux2</span>(store);
+
+<span class="pl-k">class</span> <span class="pl-en">Root</span> <span class="pl-k">extends</span> <span class="pl-en">Component</span> {
+    <span class="pl-en">render</span>(){<span class="pl-k">return</span> (
+        <span class="pl-k">&lt;</span>Provider store<span class="pl-k">=</span>{store}<span class="pl-k">&gt;</span>
+            <span class="pl-k">&lt;</span>ReduxRouter<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>Route path<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>/<span class="pl-pds">"</span></span> component<span class="pl-k">=</span>{<span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>./page/Home<span class="pl-pds">'</span></span>)}<span class="pl-k">/</span><span class="pl-k">&gt;</span>
+            <span class="pl-k">&lt;</span><span class="pl-k">/</span>ReduxRouter<span class="pl-k">&gt;</span>
+        <span class="pl-k">&lt;</span><span class="pl-k">/</span>Provider<span class="pl-k">&gt;</span>
+        );
+    }
+}
+
+<span class="pl-smi">ReactDOM</span>.<span class="pl-en">render</span>(<span class="pl-k">&lt;</span>Root<span class="pl-k">/</span><span class="pl-k">&gt;</span>, <span class="pl-smi">document</span>.<span class="pl-en">querySelector</span>(<span class="pl-s"><span class="pl-pds">'</span>#container<span class="pl-pds">'</span></span>));</pre></div>
+
+<p>To implement requirement , you need a model and a UI compenent with redux2.</p>
+
+<h2>
+<a id="modelnamejs-" class="anchor" href="#modelnamejs-" aria-hidden="true"><span class="octicon octicon-link"></span></a>modelName.js </h2>
+
+<blockquote>
+<p>the extention '.js' of model filename is recommended, as the extention '.jsx' of UI compenent filename is recommended</p>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre>
+<span class="pl-c">// when the application init, it would be set to store as default state of current model,</span>
+<span class="pl-c">// and it should be an plan object</span>
+<span class="pl-k">export</span> <span class="pl-v">default</span> {n<span class="pl-k">:</span><span class="pl-c1">0</span>};
+
+
+<span class="pl-c">// the function name should be unique in your application,</span>
+<span class="pl-k">export</span> <span class="pl-k">function</span> <span class="pl-en">sum</span>() {
+    <span class="pl-k">return</span> <span class="pl-k">async</span> (<span class="pl-smi">dispatch</span>, <span class="pl-smi">getState</span>) <span class="pl-k">=&gt;</span> {
+
+        <span class="pl-c">// "getState" would get state of current model with no parameter</span>
+        <span class="pl-c">// passing a model file name without extention as parameter will get the state of other model.</span>
+        <span class="pl-c">// const {m}= getState('otherModelName');</span>
+        <span class="pl-k">const</span> {<span class="pl-c1">n</span>}<span class="pl-k">=</span> <span class="pl-en">getState</span>();
+
+        <span class="pl-c">// passing a string as the first parameter to dispatch, it will call another function of model in your application</span>
+        <span class="pl-c">// the second parameter would be passed to the dispatched function as argument.</span>
+        <span class="pl-c">// in async function, you can get the result returned by the dispatched function with "await",</span>
+        <span class="pl-c">// and the result would be preferentially reflected in UI compenent.</span>
+        <span class="pl-k">var</span> r<span class="pl-k">=</span><span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>asyncGet<span class="pl-pds">'</span></span>, {n<span class="pl-k">:</span><span class="pl-c1">33</span>});
+        <span class="pl-k">var</span> rr<span class="pl-k">=</span><span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>normalGet<span class="pl-pds">'</span></span>);
+        <span class="pl-k">var</span> rrr<span class="pl-k">=</span><span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>);
+        <span class="pl-k">var</span> rrrr<span class="pl-k">=</span><span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>getByAsyncGet<span class="pl-pds">'</span></span>);
+
+            <span class="pl-c">// the returned object will update the state of current model and also reflected in UI compenent</span>
+        <span class="pl-k">return</span> {
+            n<span class="pl-k">:</span> n <span class="pl-k">+</span> <span class="pl-smi">r</span>.<span class="pl-smi">n</span> <span class="pl-k">+</span> <span class="pl-smi">rr</span>.<span class="pl-smi">n</span> <span class="pl-k">+</span> <span class="pl-smi">rrr</span>.<span class="pl-smi">n</span> <span class="pl-k">+</span> <span class="pl-smi">rrrr</span>.<span class="pl-smi">n</span>
+        };
+    }
+}
+
+<span class="pl-k">export</span> <span class="pl-k">function</span> <span class="pl-en">asyncGet</span>(<span class="pl-smi">options</span>) {
+    <span class="pl-k">return</span> <span class="pl-k">async</span> (<span class="pl-smi">dispatch</span>, <span class="pl-smi">getState</span>) <span class="pl-k">=&gt;</span> {
+        <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">Promise</span>(<span class="pl-k">function</span> (<span class="pl-smi">resolve</span>, <span class="pl-smi">reject</span>) {
+            <span class="pl-c1">setTimeout</span>(() <span class="pl-k">=&gt;</span> { <span class="pl-en">resolve</span>({n<span class="pl-k">:</span><span class="pl-smi">options</span>.<span class="pl-smi">n</span>}); }, <span class="pl-c1">1000</span>);
+        });
+    }
+}
+<span class="pl-k">export</span> <span class="pl-k">function</span> <span class="pl-en">normalGet</span>() {
+    <span class="pl-k">return</span> (<span class="pl-smi">dispatch</span>, <span class="pl-smi">getState</span>) <span class="pl-k">=&gt;</span> {
+        <span class="pl-k">let</span> {m}<span class="pl-k">=</span><span class="pl-en">getState</span>(<span class="pl-s"><span class="pl-pds">'</span>otherModel<span class="pl-pds">'</span></span>);
+        <span class="pl-k">return</span> {n<span class="pl-k">:</span><span class="pl-c1">888</span>}
+    }
+}
+<span class="pl-k">export</span> <span class="pl-k">function</span> <span class="pl-en">get</span>() {
+    <span class="pl-k">return</span> {n<span class="pl-k">:</span><span class="pl-c1">555</span>}
+}
+<span class="pl-k">export</span> <span class="pl-k">function</span> <span class="pl-en">getByAsyncGet</span>() {
+    <span class="pl-k">return</span> <span class="pl-k">async</span> (<span class="pl-smi">dispatch</span>, <span class="pl-smi">getState</span>) <span class="pl-k">=&gt;</span> {
+        <span class="pl-k">return</span> <span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>asyncGet<span class="pl-pds">'</span></span>);
+    }
+}
+</pre></div>
+
+<p>You can call a function of model by dispatch a string as the first parameter, without importing a model file.</p>
+
+<h2>
+<a id="homejsx" class="anchor" href="#homejsx" aria-hidden="true"><span class="octicon octicon-link"></span></a>Home.jsx</h2>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">Component</span>, <span class="pl-smi">PropTypes</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react<span class="pl-pds">'</span></span>
+<span class="pl-k">import</span> { <span class="pl-smi">connect</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react-redux<span class="pl-pds">'</span></span>
+
+@<span class="pl-en">connect</span>(state<span class="pl-k">=&gt;</span>({counter<span class="pl-k">:</span> {n<span class="pl-k">:</span> <span class="pl-smi">state</span>.<span class="pl-smi">counter</span>.<span class="pl-smi">n</span>}}))
+<span class="pl-k">export</span> <span class="pl-v">default</span> <span class="pl-k">class</span> <span class="pl-en">Counter</span> <span class="pl-k">extends</span> <span class="pl-en">Component</span> {
+    <span class="pl-en">sum</span>() {
+        <span class="pl-c">// you can pass the second parameter as an argument to the dispatched function of model if you need</span>
+        <span class="pl-c">// this.props.dispatch('sum',options);</span>
+        <span class="pl-v">this</span>.<span class="pl-smi">props</span>.<span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>sum<span class="pl-pds">'</span></span>);
+    }
+
+    <span class="pl-en">render</span>() {
+        <span class="pl-k">const</span> {  <span class="pl-c1">counter</span>} <span class="pl-k">=</span> <span class="pl-v">this</span>.<span class="pl-smi">props</span>;
+        <span class="pl-k">return</span> (
+            <span class="pl-k">&lt;</span>p<span class="pl-k">&gt;</span>
+                Result is here<span class="pl-k">:</span> {<span class="pl-smi">counter</span>.<span class="pl-smi">n</span>}
+                {<span class="pl-s"><span class="pl-pds">'</span> <span class="pl-pds">'</span></span>}
+                <span class="pl-k">&lt;</span>button onClick<span class="pl-k">=</span>{<span class="pl-v">this</span>.<span class="pl-smi">sum</span>.<span class="pl-en">bind</span>(<span class="pl-v">this</span>)}<span class="pl-k">&gt;</span>Sum<span class="pl-k">&lt;</span><span class="pl-k">/</span>button<span class="pl-k">&gt;</span>
+            <span class="pl-k">&lt;</span><span class="pl-k">/</span>p<span class="pl-k">&gt;</span>
+
+        )
+    }
+}
+</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/stevenCJC/redux2">Redux2</a> is maintained by <a href="https://github.com/stevenCJC">stevenCJC</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
