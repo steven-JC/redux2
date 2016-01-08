@@ -1,6 +1,6 @@
 Redux2
 ========
-Write less, more specific, the application architectural toolkit, which is based on redux.
+Write less, more specific, the react application architectural toolkit, which is based on redux.
 
 [![Build Status][travis-image]][travis-url]
 [![Dependency Status][gemnasium-image]][gemnasium-url]
