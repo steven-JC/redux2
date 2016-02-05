@@ -10,6 +10,10 @@ Write less, more specific, the react application architectural toolkit, which is
 
 > Redux2 is the official successor to optimist. Please feel free to submit issues and pull requests. If you'd like to contribute and don't know where to start, have a look at [the issue list](https://github.com/stevenCJC/redux2/issues) :)
 
+![image](http://120.24.169.208/login/images/redux2.jpg)
+
+
+
 ### Getting started 
 
 ````javascript
