@@ -90,8 +90,7 @@ export function sum() {
 
 		// passing a string as the first parameter to dispatch, it will call another function of model in your application
 		// the second parameter would be passed to the dispatched function as argument.
-		// in async function, you can get the result returned by the dispatched function with "await",
-		// and the result would be preferentially reflected in UI compenent.
+		// in async function, you can get the result returned by the dispatched function with "await"
 		var r=await dispatch('asyncGet', {n:33});
 		var rr=await dispatch('normalGet');
 		var rrr=await dispatch('get');
