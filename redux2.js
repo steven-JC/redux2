@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports['redux2'] = redux2;
+exports['dispatch'] = dispatch;
 exports['reducerMaker'] = reducerMaker;
 exports['redux2Middleware'] = redux2Middleware;
 
@@ -175,6 +176,10 @@ function redux2(store) {
 		}
 		return dispatch.call(this, obj || arg1);
 	}
+}
+
+function dispatch(){
+	return localDispatch.call(null,arguments[0],arguments[1],arguments[2]);
 }
 
 function redux2Middleware() {
