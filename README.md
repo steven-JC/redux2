@@ -158,6 +158,17 @@ export default class Counter extends Component {
 
 ````
 
+You can also dispatch the function of model by the method 'require('redux2').dispatch', except in a function of model or UI compenent.
+
+````javascript
+
+var dispatch = require('redux2').dispatch;
+window.onload=function(){
+	dispatch('hello',{'msg':'world'});
+};
+
+````
+
 
 
 
