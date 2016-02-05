@@ -20,7 +20,7 @@
 
     <section class="main-content">
       <h1>
-<a id="redux2" class="anchor" href="#redux2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Redux2</h1>
+<a id="redux2" class="anchor" href="#redux2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Redux2</h1>
 
 <p>Write less, more specific, the react application architectural toolkit, which is based on redux.</p>
 
@@ -35,18 +35,18 @@
 </blockquote>
 
 <h3>
-<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h3>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting started</h3>
 
 <div class="highlight highlight-source-js"><pre>npm install redux2 <span class="pl-k">--</span>save</pre></div>
 
 <h1>
-<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>examples</h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>examples</h1>
 
 <h3>
-<a id="your-index-file-of-your-application-should-be-like-this" class="anchor" href="#your-index-file-of-your-application-should-be-like-this" aria-hidden="true"><span class="octicon octicon-link"></span></a>your index file of your application should be like this:</h3>
+<a id="your-index-file-of-your-application-should-be-like-this" class="anchor" href="#your-index-file-of-your-application-should-be-like-this" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>your index file of your application should be like this:</h3>
 
 <h2>
-<a id="appjs" class="anchor" href="#appjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>app.js:</h2>
+<a id="appjs" class="anchor" href="#appjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>app.js:</h2>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-s"><span class="pl-pds">'</span>babel-polyfill<span class="pl-pds">'</span></span>
 <span class="pl-k">import</span> <span class="pl-smi">React</span>,{<span class="pl-smi">Component</span>} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react<span class="pl-pds">'</span></span>
@@ -62,7 +62,7 @@
 <span class="pl-c">// use the function "require.context" of webpack to collect all of models</span>
 <span class="pl-k">var</span> reduc<span class="pl-k">=</span><span class="pl-en">reducerMaker</span>([<span class="pl-smi">require</span>.<span class="pl-en">context</span>(<span class="pl-s"><span class="pl-pds">'</span>./actions<span class="pl-pds">'</span></span>, <span class="pl-c1">false</span>,<span class="pl-sr"> <span class="pl-pds">/</span><span class="pl-cce">\.</span>js<span class="pl-k">$</span><span class="pl-pds">/</span></span>)]);
 
-<span class="pl-k">const</span> <span class="pl-c1">reducers</span><span class="pl-k">=</span><span class="pl-en">combineReducers</span>({...<span class="pl-smi">reduc</span>, router<span class="pl-k">:</span> routerStateReducer});
+<span class="pl-k">const</span> <span class="pl-c1">reducers</span><span class="pl-k">=</span><span class="pl-en">combineReducers</span>({<span class="pl-k">...</span>reduc, router<span class="pl-k">:</span> routerStateReducer});
 
 <span class="pl-k">const</span> <span class="pl-c1">store</span> <span class="pl-k">=</span> <span class="pl-en">compose</span>(
     <span class="pl-en">applyMiddleware</span>( <span class="pl-en">redux2Middleware</span>()),
@@ -87,7 +87,7 @@
 <p>To implement requirement , you need a model and a UI compenent with redux2.</p>
 
 <h2>
-<a id="modelnamejs-" class="anchor" href="#modelnamejs-" aria-hidden="true"><span class="octicon octicon-link"></span></a>modelName.js </h2>
+<a id="modelnamejs-" class="anchor" href="#modelnamejs-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>modelName.js </h2>
 
 <blockquote>
 <p>the extention '.js' of model filename is recommended, as the extention '.jsx' of UI compenent filename is recommended</p>
@@ -110,8 +110,7 @@
 
         <span class="pl-c">// passing a string as the first parameter to dispatch, it will call another function of model in your application</span>
         <span class="pl-c">// the second parameter would be passed to the dispatched function as argument.</span>
-        <span class="pl-c">// in async function, you can get the result returned by the dispatched function with "await",</span>
-        <span class="pl-c">// and the result would be preferentially reflected in UI compenent.</span>
+        <span class="pl-c">// in async function, you can get the result returned by the dispatched function with "await"</span>
         <span class="pl-k">var</span> r<span class="pl-k">=</span><span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>asyncGet<span class="pl-pds">'</span></span>, {n<span class="pl-k">:</span><span class="pl-c1">33</span>});
         <span class="pl-k">var</span> rr<span class="pl-k">=</span><span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>normalGet<span class="pl-pds">'</span></span>);
         <span class="pl-k">var</span> rrr<span class="pl-k">=</span><span class="pl-k">await</span> <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>);
@@ -150,7 +149,7 @@
 <p>You can call a function of model by dispatch a string as the first parameter, without importing a model file.</p>
 
 <h2>
-<a id="homejsx" class="anchor" href="#homejsx" aria-hidden="true"><span class="octicon octicon-link"></span></a>Home.jsx</h2>
+<a id="homejsx" class="anchor" href="#homejsx" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Home.jsx</h2>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">Component</span>, <span class="pl-smi">PropTypes</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react<span class="pl-pds">'</span></span>
 <span class="pl-k">import</span> { <span class="pl-smi">connect</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>react-redux<span class="pl-pds">'</span></span>
@@ -175,6 +174,15 @@
         )
     }
 }
+</pre></div>
+
+<p>You can also dispatch the function of model by the method 'require('redux2').dispatch'.</p>
+
+<div class="highlight highlight-source-js"><pre>
+<span class="pl-k">var</span> dispatch <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux2<span class="pl-pds">'</span></span>).<span class="pl-smi">dispatch</span>;
+<span class="pl-c1">window</span>.<span class="pl-en">onload</span><span class="pl-k">=</span><span class="pl-k">function</span>(){
+    <span class="pl-en">dispatch</span>(<span class="pl-s"><span class="pl-pds">'</span>hello<span class="pl-pds">'</span></span>,{<span class="pl-s"><span class="pl-pds">'</span>msg<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>world<span class="pl-pds">'</span></span>});
+};
 </pre></div>
 
       <footer class="site-footer">
