@@ -21,9 +21,10 @@ examples
 ========
 
 
-### your index file of your application should be like this:
+
 app.js:
 -------------------------------------------------------------------
+your index file of your application should be like this:
 
 ````javascript
 import 'babel-polyfill'
