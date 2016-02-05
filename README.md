@@ -37,10 +37,11 @@ import {createHistory} from 'history'
 
 import {redux2, reducerMaker, redux2Middleware} from 'redux2'
 
-// use the function "require.context" of webpack to collect all of models
-var reduc=reducerMaker([require.context('./actions', false, /\.js$/)]);
+// use the function "require.context" of webpack to collect all of actions
+// by 'reducerMaker', it will automatically generate all the related reducers
+var reducers_=reducerMaker([require.context('./actions', false, /\.js$/)]);
 
-const reducers=combineReducers({...reduc, router: routerStateReducer});
+const reducers=combineReducers({...reducers_, router: routerStateReducer});
 
 const store = compose(
 	applyMiddleware( redux2Middleware()),
@@ -65,38 +66,39 @@ ReactDOM.render(<Root/>, document.querySelector('#container'));
 
 
 
-To implement requirement , you need a model and a UI compenent with redux2.
+>To implement business requirement, you need one action file and one UI compenent file with redux2.
+>the extention '.js' of action file name is recommended, as the extention '.jsx' of UI compenent filename is recommended
 
-modelName.js 
+actions.js  
 -------------------------------------------------------------------
-
->the extention '.js' of model filename is recommended, as the extention '.jsx' of UI compenent filename is recommended
 
 ````javascript
 
-// when the application init, it would be set to store as default state of current model,
-// and it should be an plan object
+// when the application init, it would be set to store as default state of current action file,
+// and it should be an plain object
 export default {n:0};
 
 
 // the function name should be unique in your application,
+// as it would be called by other action in different files or UI compenents, 
+// and even by 'require('redux2').dispatch'
 export function sum() {
 	return async (dispatch, getState) => {
 
-		// "getState" would get state of current model with no parameter
-		// passing a model file name without extention as parameter will get the state of other model.
-		// const {m}= getState('otherModelName');
+		// "getState" would get the state maintained by current file with no parameter
+		// passing an action file name without extention as parameter will get the state maintained by other action files.
+		// const {m}= getState('otherActionFileName');
 		const {n}= getState();
 
-		// passing a string as the first parameter to dispatch, it will call another function of model in your application
-		// the second parameter would be passed to the dispatched function as argument.
-		// in async function, you can get the result returned by the dispatched function with "await"
+		// passing a string as the first parameter to dispatch, it will call another action function in your application
+		// the second parameter would be passed to the action function as argument.
+		// in async action function, you can get the result returned by the dispatched action with "await"
 		var r=await dispatch('asyncGet', {n:33});
 		var rr=await dispatch('normalGet');
 		var rrr=await dispatch('get');
 		var rrrr=await dispatch('getByAsyncGet');
 
-        	// the returned object will update the state of current model and also reflected in UI compenent
+        	// the returned object will update the state of current file and also automaticaly reflected in UI compenent
 		return {
 			n: n + r.n + rr.n + rrr.n + rrrr.n
 		};
@@ -112,7 +114,7 @@ export function asyncGet(options) {
 }
 export function normalGet() {
 	return (dispatch, getState) => {
-	    let {m}=getState('otherModel');
+	    let {m}=getState('otherActionFileName');
 		return {n:888}
 	}
 }
@@ -127,7 +129,6 @@ export function getByAsyncGet() {
 
 ````
 
-You can call a function of model by dispatch a string as the first parameter, without importing a model file.
 
 Home.jsx
 -------------------------------------------------------------------
@@ -138,7 +139,7 @@ import { connect } from 'react-redux'
 @connect(state=>({counter: {n: state.counter.n}}))
 export default class Counter extends Component {
     sum() {
-        // you can pass the second parameter as an argument to the dispatched function of model if you need
+        // you can pass the second parameter as an argument to the dispatched action if you need
         // this.props.dispatch('sum',options);
         this.props.dispatch('sum');
     }
@@ -158,7 +159,7 @@ export default class Counter extends Component {
 
 ````
 
-You can also dispatch the function of model by the method 'require('redux2').dispatch'.
+You can also dispatch an action by the method 'require('redux2').dispatch'.
 
 ````javascript
 
